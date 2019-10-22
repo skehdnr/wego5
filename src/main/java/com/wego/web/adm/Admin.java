@@ -1,14 +1,16 @@
 package com.wego.web.adm;
 
-import java.io.Serializable;
-
 import org.springframework.stereotype.Component;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
-@Data @Component
-public class Admin implements Serializable{
+import lombok.NoArgsConstructor;
 
-	private static final long serialVersionUID = 1L;
+@Data
+@Component
+@AllArgsConstructor
+@NoArgsConstructor
+public class Admin {
+
 	
 	private String eid,pwd,job,mgr,hireDate,sal,comm,deptNo;
 

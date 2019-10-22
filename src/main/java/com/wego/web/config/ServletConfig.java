@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.wego.web.controller"})
+@ComponentScan(basePackages = {"com.wego.web.cmm"})
 public class ServletConfig implements WebMvcConfigurer{
 	
 	@Override
@@ -26,8 +26,6 @@ public class ServletConfig implements WebMvcConfigurer{
 	   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	      registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	   }
-	
-	
 	
 	
 }
