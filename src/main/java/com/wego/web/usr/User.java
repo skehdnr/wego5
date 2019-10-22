@@ -1,4 +1,4 @@
-package com.wego.web.domains;
+package com.wego.web.usr;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Component
-public class UserDTO implements Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
