@@ -38,5 +38,5 @@ public class UserCtrl {
 	   IFunction<User,User> f = t -> userMapper.selectByIdPw(param);
        return f.apply(param);
     }
-
+ 
 }
