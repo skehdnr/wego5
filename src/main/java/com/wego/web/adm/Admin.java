@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin {
-
-	
-	private String eid,pwd,job,mgr,hireDate,sal,comm,deptNo;
+	public class Admin {
+		private String eid,pwd,job,mgr,hireDate,sal,comm,deptNo;
 
 }
