@@ -32,7 +32,7 @@ auth = (()=>{
                 let data = {uid:$('#uid').val(),pwd:$('#pwd').val(),uname:$('#uname').val(),birth:$('#birth').val(),gender:$('#gender').val()
                 		,tel:$('#tel').val(),pettype:$('#pettype').val()}
                 $.ajax({
-                    url:_+'/user/join',
+                    url:_+'/usr/join',
                     type: 'POST',
                     dataType:'json',
                     data : JSON.stringify(data),
@@ -62,7 +62,7 @@ auth = (()=>{
             click : e=>{
                 e.preventDefault()
                 $.ajax({
-                    url:_+'/user/login',
+                    url:_+'/usr/login',
                     type:'POST',
                     dataType:'json',
                     data: JSON.stringify({uid:$('#uid').val(),pwd:$('#pwd').val(),uname:$('#uname').val()
