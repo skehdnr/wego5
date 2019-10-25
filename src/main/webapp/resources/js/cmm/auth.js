@@ -2,12 +2,12 @@
 var auth = auth || {}
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-    let _, js, auth_vue_js ,brd_vue_js
+    let _, js, auth_vue_js,brdjs
     let init = ()=>{
         _ = $.ctx()
         js = $.js()
         auth_vue_js = js+'/vue/auth_vue.js'
-        brd_vue_js = js+'/vue/brd_vue.js'
+        brdjs = js+'/brd/brd.js'
     }
     let onCreate =()=>{
         init()
@@ -33,9 +33,6 @@ auth = (()=>{
 	        	            	.val('사용중인 ID 입니다')
 	        	            	.css('color','red')
 	        	          },
-	        	          error : e => {
-	        		    	alert('Loign AJAX 실패');
-	        	          }
 	        	        })
 	        	}
 	        	
@@ -89,21 +86,22 @@ auth = (()=>{
         	text : "로그인",
         	click : e => {
         		e.preventDefault()
-        		let data = {uid : $('#uid').val(), pwd : $('#pwd').val()}
-        $.ajax({
-          url : _+'/users/'+$('#uid').val(),
-          type : 'POST',
-          data : JSON.stringify(data),
-          dataType : 'json',
-          contentType : 'application/json',
-          success : d =>{
-            alert(d.uname+' 님 환영합니다')
-            	brd_home()
-          },
-          error : e => {
-	    	alert('Loign AJAX 실패');
-          }
-        })	
+		        $.ajax({
+		          url : _+'/users/'+$('#uid').val(),
+		          type : 'POST',
+		          data : JSON.stringify({uid : $('#uid').val(), pwd : $('#pwd').val()}),
+		          dataType : 'json',
+		          contentType : 'application/json',
+		          success : d =>{
+		        	  $.getScript(brdjs, ()=>{
+		            		brd.onCreate()
+		            	})
+		            alert(d.uname+' 님 환영합니다')
+		          },
+		          error : e => {
+			    	alert('Loign AJAX 실패');
+		          }
+		        })	
         	}
         })
         .addClass("btn btn-lg btn-primary btn-block")
@@ -130,7 +128,6 @@ auth = (()=>{
 	    	success : d => {
 	    			if(d.msg === 'SUCCESS'){
 	    				alert('가입 가능 아이디 입니다.')
-	    				join()
 	    			}else{
 	    				alert('이미 존재하는 아이디 입니다.')
     				}
@@ -145,5 +142,5 @@ auth = (()=>{
         	.html(brd_vue.brd_body())	
     	})
     }
-    return {onCreate, join, login,brd_home}
+    return {onCreate, join, login}
 })();
