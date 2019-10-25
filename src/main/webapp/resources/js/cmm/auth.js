@@ -2,16 +2,21 @@
 var auth = auth || {}
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-    let _, js, auth_vue_js,brdjs
+    let _, js, auth_vue_js,brd_js,router_js
     let init = ()=>{
         _ = $.ctx()
         js = $.js()
         auth_vue_js = js+'/vue/auth_vue.js'
-        brdjs = js+'/brd/brd.js'
+        brd_js = js+'/brd/brd.js'
+        router_js = js+'/cmm/router.js'
     }
     let onCreate =()=>{
         init()
-        $.getScript(auth_vue_js).done(()=>{
+        $.when(
+        $.getScript(auth_vue_js),
+        $.getScript(router_js)
+        )
+        .done(()=>{
            setContentView()
     		$('#a_go_join').click(e=>{
          		e.preventDefault()
@@ -19,7 +24,7 @@ auth = (()=>{
 	        $('head').html(auth_vue.join_head())
 	        $('body').html(auth_vue.join_body())
 	        $('#uid').keyup(()=>{
-	        	if($('#uid').val().length>2){
+	        	if($('#uid').val().length>1){
 	        		$.ajax({
 	        	          url : _+'/users/'+$('#uid').val()+'/exist/',
 	        	          contentType : 'application/json',
@@ -93,10 +98,15 @@ auth = (()=>{
 		          dataType : 'json',
 		          contentType : 'application/json',
 		          success : d =>{
-		        	  $.getScript(brdjs, ()=>{
-		            		brd.onCreate()
-		            	})
-		            alert(d.uname+' 님 환영합니다')
+		        	  $.when(
+		        	    $.getScript(brd_js),
+		        	    $.getScript(router_js)
+		        	)
+		        	.done(()=>{
+		        		$.extend(new User(d))
+		        		brd.onCreate(d)
+		        	})
+		        	alert(d.uname+' 님 환영합니다')
 		          },
 		          error : e => {
 			    	alert('Loign AJAX 실패');

@@ -9,6 +9,14 @@ function Session(x) {
 		js : ()=>{return sessionStorage.getItem('js');},
 		css : ()=>{return sessionStorage.getItem('css');},
 		img : ()=>{return sessionStorage.getItem('img');}
-		
-	};
-};
+	}
+	}
+function User(u) {
+	sessionStorage.setItem('uid',u.uid);
+	sessionStorage.setItem('uname',u.uname);
+	return{
+		uid : ()=>{return sessionStorage.getItem('uid');},
+		uname : ()=>{return sessionStorage.getItem('uname');}
+	
+}
+}
