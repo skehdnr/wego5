@@ -16,16 +16,36 @@ auth = (()=>{
     		$('#a_go_join').click(e=>{
          		e.preventDefault()
 	    	$.getScript(auth_vue_js)
-	        $('head')
-	        .html(auth_vue.join_head())
-	        $('body')
-	        .html(auth_vue.join_body())
+	        $('head').html(auth_vue.join_head())
+	        $('body').html(auth_vue.join_body())
+	        $('#uid').keyup(()=>{
+	        	if($('#uid').val().length>2){
+	        		$.ajax({
+	        	          url : _+'/users/'+$('#uid').val()+'/exist/',
+	        	          contentType : 'application/json',
+	        	          success : d =>{
+	        	            if(d.msg === 'SUCCESS')
+	        	            	$('#dupl_check')
+	        	            	.val('사용가능한 ID 입니다')
+	        	            	.css('color','green')
+	        	            else
+	        	            	$('#dupl_check')
+	        	            	.val('사용중인 ID 입니다')
+	        	            	.css('color','red')
+	        	          },
+	        	          error : e => {
+	        		    	alert('Loign AJAX 실패');
+	        	          }
+	        	        })
+	        	}
+	        	
+	        });
 	            $('<button>',{
 	                text : '회원가입',
 	                href : '#',
 	                click : e=>{
 	                	e.preventDefault();
-	                	existId($('#uid').val())
+	                	join()
 	                }
 	            })
 	            .addClass('btn btn-primary btn-lg btn-block')
@@ -34,6 +54,9 @@ auth = (()=>{
         }).fail(()=>{alert(WHEN_ERR)})
     }
     let setContentView =()=>{
+    	$('head').html(auth_vue.login_head({css: $.css(), img: $.img()}))
+        $('body').addClass('text-center')
+        .html(auth_vue.login_body({css: $.css(), img: $.img()}))
     	 login()
     }
     let join =()=>{
@@ -47,9 +70,12 @@ auth = (()=>{
 	    	contentType : 'application/json',
 	    	success : d => {
 	    		alert('AJAX 성공 아이디: '+d.msg)
-	    			if(d.msg === 'SUCCESS')
+	    			if(d.msg === 'SUCCESS'){
+	    				$('head').html(auth_vue.login_head({css: $.css(), img: $.img()}))
+	    		        $('body').addClass('text-center')
+	    		        .html(auth_vue.login_body({css: $.css(), img: $.img()}))
 	    				login()
-	    			else
+	    			}else
 	    				alert('회원가입 실패')
 	    	},
 	    	error : e => {
@@ -58,12 +84,6 @@ auth = (()=>{
     	})
     }
     let login =()=>{
-    	let x = {css: $.css(), img: $.img()}
-		$('head')
-        .html(auth_vue.login_head())
-        $('body')
-        .addClass('text-center')
-        .html(auth_vue.login_body())
         $('<button>',{
         	type : "submit",
         	text : "로그인",
@@ -71,8 +91,7 @@ auth = (()=>{
         		e.preventDefault()
         		let data = {uid : $('#uid').val(), pwd : $('#pwd').val()}
         $.ajax({
-        	
-          url : _+'/users/uid',
+          url : _+'/users/'+$('#uid').val(),
           type : 'POST',
           data : JSON.stringify(data),
           dataType : 'json',
