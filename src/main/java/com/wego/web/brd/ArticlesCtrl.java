@@ -20,34 +20,35 @@ import com.wego.web.utl.Printer;
 @RestController
 @RequestMapping("/articles")
 public class ArticlesCtrl {
-	private static final Logger logger = LoggerFactory.getLogger(ArticlesCtrl.class);
-	@Autowired Map<String,Object>map;
-	@Autowired Articles articles;
-	@Autowired Printer printer;
-	@Autowired ArticlesMapper articlesMapper;
-	
-	
-	@PostMapping("/")
-	public Map<?,?> write(@RequestBody Articles param) {
-		IConsumer<Articles> c = t -> articlesMapper.insert(param);
-		c.accept(param);
-		map.clear();
-		map.put("msg", "SUCCESS");
-		return map;
-	}
-	@GetMapping("/")
-	public Articles read(@RequestBody Articles param) {
-		return param;
-		
-	}
-	@PutMapping("/")
-	public Articles update(@PathVariable Articles param) {
-		return param;
-		
-	}
-	@DeleteMapping("/")
-	public Articles delete(@PathVariable Articles param) {
-		return param;
-		
-	}
+   private static final Logger logger = LoggerFactory.getLogger(ArticlesCtrl.class);
+   @Autowired Map<String , Object> map;
+   @Autowired Printer printer;
+   @Autowired Articles art;
+   @Autowired ArticlesMapper articlesMapper;
+   
+   @PostMapping("/")
+   public Map<?,?> write(@RequestBody Articles param){
+	   param.setBoardType("게시판");
+	   IConsumer<Articles> c = t -> articlesMapper.insertArticle(param);
+	   c.accept(param);
+	   map.clear();
+	   map.put("msg", "SUCCESS");
+	   return map;
+   }
+   
+   @GetMapping("/{artseq}")
+   public Articles read(@PathVariable String artseq, @RequestBody Articles param){
+      return null;
+   }
+   
+   @PutMapping("/{artseq}")
+   public Articles update(@PathVariable String artseq, @RequestBody Articles param){
+      return null;
+   }
+   
+   @DeleteMapping("/{artseq}")
+   public Map<?,?> removeArticle(@PathVariable String artseq, @RequestBody Articles param){
+      return map;
+   }
+   
 }

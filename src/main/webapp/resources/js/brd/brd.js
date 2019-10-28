@@ -7,26 +7,18 @@ brd = (()=>{
         js = $.js()
         brd_vue_js = js+'/vue/brd_vue.js'
         $userid = $.user()
+        
 	}
 	let onCreate = () =>{
 		init()
 		$.getScript(brd_vue_js).done(()=>{
 			setContentView()
-			$('<a>',{
-	        	href : '#',
-	        	click : e=>{
-		        	e.preventDefault()
-		        	write()
-	        },
-	        text : '글쓰기'
-		})
-		.addClass('nav-item')
-		.appendTo('#go_write')
+			navigation()
 	})
 		
 	}
 	let setContentView=(d)=>{
-			$('head').html(brd_vue.brd_head({css: $.css(), img: $.img()}))
+			$('head').html(brd_vue.brd_head())
 	        $('body').addClass('text-center')
 	        .html(brd_vue.brd_body(d))
 	        $('#recent_updates .media').remove()
@@ -38,7 +30,7 @@ brd = (()=>{
 	let write=()=>{
 		alert('글쓰기클릭')
 		$('#recent_updates').html(brd_vue.brd_write())
-		$('#writer').val($userid)
+		$('#write_form').val($userid)
 		$('#suggestions').remove()
 		/*$('<button>',{
 			text : '글쓰기',
@@ -63,16 +55,37 @@ brd = (()=>{
         }).addClass("btn btn-primary")
           .appendTo('#write_form')
           .click(()=>{
+        	 let json = {
+        			 uid : $('#write_form input[name="writer"]').val(),
+        			 title : $('#write_form input[name="title"]').val(),
+        			 content : $('#write_form textarea[name="content"]').val()
+        	 }
+        	 alert('ID+제목+내용'+json.uid+json.title+json.content)
         	$.ajax ({
         		url : _+'/articles/',
-        		type : '',
-        		data : JSON.stringify(data),
+        		type : 'POST',
+        		data : JSON.stringify(json),
         		dataType : 'json',
         		contentType : 'application/json',
-        		success : ()=>{},
-        		error : ()=>{}
+        		success : d=>{
+        			setContentView()
+        			navigation()
+        		},
+        		error : e=>{alert('글쓰기 에러')}
         	})
           })
+	}
+	let navigation = ()=>{
+		$('<a>',{
+        	href : '#',
+        	click : e=>{
+	        	e.preventDefault()
+	        	write()
+        },
+        text : '글쓰기'
+	})
+	.addClass('nav-item')
+	.appendTo('#go_write')
 	}
 	return {onCreate}
 })()
