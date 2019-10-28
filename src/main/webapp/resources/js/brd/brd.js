@@ -28,53 +28,47 @@ brd = (()=>{
 	/*+' <input type="reset" class="btn btn-danger" style="float:right;width:100px;margin-right:10px" value="CANCEL"/>'
 	+'<input name="write" type="submit" class="btn btn-primary" style="float:right;width:100px;margin-right:10px" value="SUBMIT"/>'*/
 	let write=()=>{
-		alert('글쓰기클릭')
-		$('#recent_updates').html(brd_vue.brd_write())
-		$('#write_form').val($userid)
-		$('#suggestions').remove()
-		/*$('<button>',{
-			text : '글쓰기',
-			click : e =>{
-				e.preventDefault();
-				alert('글쓰기 성공')
-			}
-		}).addClass("btn btn-danger")
-          .appendTo('#btn_write')*/
-		$('<input>',{
-			style:"float:right;width:100px;margin-right:10px",
-			value:"취소"
-		}).addClass("btn btn-danger")
-          .appendTo('#write_form')
-          .click(()=>{
-        	  
-          })
+        $('#recent_updates').html(brd_vue.brd_write())
+        $('#write_form input[name="writer"]').val($userid)
+        $('#suggestions').remove()
         $('<input>',{
-        	type:"submit",
-        	style:"float:right;width:100px;margin-right:10px",
-        	value:"글쓰기"
-        }).addClass("btn btn-primary")
-          .appendTo('#write_form')
-          .click(()=>{
-        	 let json = {
-        			 uid : $('#write_form input[name="writer"]').val(),
-        			 title : $('#write_form input[name="title"]').val(),
-        			 content : $('#write_form textarea[name="content"]').val()
-        	 }
-        	 alert('ID+제목+내용'+json.uid+json.title+json.content)
-        	$.ajax ({
-        		url : _+'/articles/',
-        		type : 'POST',
-        		data : JSON.stringify(json),
-        		dataType : 'json',
-        		contentType : 'application/json',
-        		success : d=>{
-        			setContentView()
-        			navigation()
-        		},
-        		error : e=>{alert('글쓰기 에러')}
-        	})
-          })
-	}
+            style: "float:right;width:100px;margin-right:10px",
+            value: "취소"
+        })
+        .addClass("btn btn-danger")
+        .appendTo('#write_form')
+        .click(()=>{
+            
+        })
+        $('<input>',{
+            style: "float:right;width:100px;margin-right:10px",
+            value: "전송"
+        })
+        .addClass("btn btn-primary")
+        .appendTo('#write_form')
+        .click(e=>{
+            e.preventDefault()
+            let json = {
+                    uid : $('#write_form input[name="writer"]').val(),
+                    title: $('#write_form input[name="title"]').val(),
+                    content: $('#write_form textarea[name="content"]').val()
+            }
+            alert('글내용 '+json.content)
+            $.ajax({
+                url : _+'/articles/',
+                type : 'POST',
+                data : JSON.stringify(json),
+                dataType : 'json',
+                contentType : 'application/json',
+                success : d=>{
+                    $('#recent_updates').html('<h1>목록 불러오기</h1>')
+                    
+                },
+                error : e=>{alert('에러')}
+            })
+        })
+        
+    }
 	let navigation = ()=>{
 		$('<a>',{
         	href : '#',
@@ -84,7 +78,7 @@ brd = (()=>{
         },
         text : '글쓰기'
 	})
-	.addClass('nav-item')
+	.addClass('nav-iink')
 	.appendTo('#go_write')
 	}
 	return {onCreate}

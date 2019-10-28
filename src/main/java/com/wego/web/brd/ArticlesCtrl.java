@@ -28,6 +28,7 @@ public class ArticlesCtrl {
    
    @PostMapping("/")
    public Map<?,?> write(@RequestBody Articles param){
+	   printer.accept("아티클 들어옴");
 	   param.setBoardType("게시판");
 	   IConsumer<Articles> c = t -> articlesMapper.insertArticle(param);
 	   c.accept(param);
