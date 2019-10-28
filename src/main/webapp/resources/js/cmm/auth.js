@@ -97,17 +97,17 @@ auth = (()=>{
 		          data : JSON.stringify({uid : $('#uid').val(), pwd : $('#pwd').val()}),
 		          dataType : 'json',
 		          contentType : 'application/json',
-		          success : d =>{
-		        	  $.when(
-		        	    $.getScript(brd_js),
-		        	    $.getScript(router_js)
-		        	)
-		        	.done(()=>{
-		        		$.extend(new User(d))
-		        		brd.onCreate(d)
-		        	})
-		        	alert(d.uname+' 님 환영합니다')
-		          },
+		          success: d =>{
+      				$.when(
+      						$.getScript(router_js,$.extend(new User(d))),
+      						$.getScript(brd_js)
+          				).done(()=>{
+          				 	brd.onCreate()
+          				}
+          				).fail(()=>{
+          					alert('WHEN DONE 실패')
+          				})
+      			},
 		          error : e => {
 			    	alert('Loign AJAX 실패');
 		          }
@@ -117,7 +117,7 @@ auth = (()=>{
         .addClass("btn btn-lg btn-primary btn-block")
         .appendTo('#btn_login')
     }
-    let mypage =(d)=>{
+    let mypage =(d)=>{ 
     	let x = {
     			uid : d.uid,
                 pwd : d.pwd,

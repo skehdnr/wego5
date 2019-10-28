@@ -1,21 +1,22 @@
 "use strict"
-var brd = brd ||{}
+var brd = brd||{}
 brd = (()=>{
-	let _, js, brd_vue_js
+	let _, js, brd_vue_js, $userid
 	let init =()=>{
-		_ = $.ctx()
+		 _ = $.ctx()
         js = $.js()
         brd_vue_js = js+'/vue/brd_vue.js'
+        $userid = $.user()
 	}
-	let onCreate = d =>{
+	let onCreate = () =>{
 		init()
 		$.getScript(brd_vue_js).done(()=>{
-			setContentView(d)
+			setContentView()
 			$('<a>',{
 	        	href : '#',
 	        	click : e=>{
 		        	e.preventDefault()
-		        	write(d)
+		        	write()
 	        },
 	        text : '글쓰기'
 		})
@@ -32,11 +33,46 @@ brd = (()=>{
 	        $('#recent_updates .d-block').remove()
 	        $('#recent_updates').append('<h1>등록된 글이 없습니다.</h1>')
 	}
-	let write=d=>{
-		alert('글쓰기로 이동')
-		$('#recent_updates').html(brd_vue.brd_write(d))
+	/*+' <input type="reset" class="btn btn-danger" style="float:right;width:100px;margin-right:10px" value="CANCEL"/>'
+	+'<input name="write" type="submit" class="btn btn-primary" style="float:right;width:100px;margin-right:10px" value="SUBMIT"/>'*/
+	let write=()=>{
+		alert('글쓰기클릭')
+		$('#recent_updates').html(brd_vue.brd_write())
+		$('#writer').val($userid)
 		$('#suggestions').remove()
-		
+		/*$('<button>',{
+			text : '글쓰기',
+			click : e =>{
+				e.preventDefault();
+				alert('글쓰기 성공')
+			}
+		}).addClass("btn btn-danger")
+          .appendTo('#btn_write')*/
+		$('<input>',{
+			style:"float:right;width:100px;margin-right:10px",
+			value:"취소"
+		}).addClass("btn btn-danger")
+          .appendTo('#write_form')
+          .click(()=>{
+        	  
+          })
+        $('<input>',{
+        	type:"submit",
+        	style:"float:right;width:100px;margin-right:10px",
+        	value:"글쓰기"
+        }).addClass("btn btn-primary")
+          .appendTo('#write_form')
+          .click(()=>{
+        	$.ajax ({
+        		url : _+'/articles/',
+        		type : '',
+        		data : JSON.stringify(data),
+        		dataType : 'json',
+        		contentType : 'application/json',
+        		success : ()=>{},
+        		error : ()=>{}
+        	})
+          })
 	}
 	return {onCreate}
 })()
