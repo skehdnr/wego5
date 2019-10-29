@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticlesMapper {
 	public void insertArticle (Articles articles);
+	public String listArticle ();
 
 }

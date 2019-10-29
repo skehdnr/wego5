@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wego.web.cmm.IConsumer;
+import com.wego.web.cmm.IFunction;
+import com.wego.web.cmm.ISupplier;
 import com.wego.web.utl.Printer;
 
 @RestController
@@ -34,7 +36,22 @@ public class ArticlesCtrl {
 	   c.accept(param);
 	   map.clear();
 	   map.put("msg", "SUCCESS");
+	 
+	   ISupplier<String> s =() -> articlesMapper.listArticle();
+		map.clear();
+		printer.accept("카운팅"+s.get());
+		map.put("count", s.get());
 	   return map;
+   }
+   @GetMapping("/count")
+   public Map<?,?> listArticle() {
+	int count = 0;
+	ISupplier<String> s =() -> articlesMapper.listArticle();
+	map.clear();
+	printer.accept("카운팅"+s.get());
+	map.put("count", s.get());
+	return map;
+	   
    }
    
    @GetMapping("/{artseq}")
@@ -51,5 +68,6 @@ public class ArticlesCtrl {
    public Map<?,?> removeArticle(@PathVariable String artseq, @RequestBody Articles param){
       return map;
    }
+   
    
 }

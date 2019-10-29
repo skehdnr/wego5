@@ -4,8 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.wego.web.brd.ArticlesMapper">
  
+   <select id="listArticle" resultType="String">
+  	SELECT COUNT(*) 
+	FROM ARTICLE
+	<!-- WHERE UID LIKE #{uid} -->
+   </select>
    
-<insert id="insertArticle" parameterType="Article">
+	<insert id="insertArticle" parameterType="Article">
        insert into article (uid,board_Type,title,content) values (
            #{uid}, #{boardType},#{title}, #{content}
        )
