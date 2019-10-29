@@ -31,7 +31,7 @@ brd_vue = {
 		'        <ul class="navbar-nav mr-auto">'+
 		'          <li id="go_write" class="nav-item active"></li>'+
 		'          <li class="nav-item">'+
-		'            <a class="nav-link" href="#">내가쓴글보기</a>'+
+		'            <a class="nav-link" href="#">Notifications</a>'+
 		'          </li>'+
 		'          <li class="nav-item">'+
 		'            <a class="nav-link" href="#">Profile</a>'+
@@ -55,7 +55,7 @@ brd_vue = {
 		'      </div>'+
 		'    </nav>'+
 
-		'    <div class="nav-scroller bg-white box-shadow">'+
+		'    <div  class="nav-scroller bg-white box-shadow">'+
 		'      <nav class="nav nav-underline">'+
 		'        <a class="nav-link active" href="#">Dashboard</a>'+
 		'        <a class="nav-link" href="#">'+
@@ -67,7 +67,7 @@ brd_vue = {
 		'        <a class="nav-link" href="#">Link</a>'+
 		'        <a class="nav-link" href="#">Link</a>'+
 		'        <a class="nav-link" href="#">Link</a>'+
-		'        <a class="nav-link" href="#">Link</a>'+
+		'        <a id="mywrite" class="nav-link" href="#"></a>'+
 		'        <a class="nav-link" href="#">Link</a>'+
 		'      </nav>'+
 		'    </div>'+

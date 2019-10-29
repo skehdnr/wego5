@@ -104,6 +104,16 @@ brd = (()=>{
 	})
 	.addClass('nav-iink')
 	.appendTo('#go_write')
+	$('<a>',{
+		href : '#',
+		click : e=>{
+			e.preventDefault()
+			mypage()
+		},
+		text : '내가쓴글보기'
+	})
+	.addClass('nav-iink')
+	.appendTo('#mywrite')
 	}
 	let detail = x =>{
 		$('#recent_updates').html(brd_vue.brd_write())
@@ -175,10 +185,9 @@ brd = (()=>{
         })
 		
 	}
-	let my_write = ()=>{
-		$('<button>',{
-			
-		})
-	}
+	let mypage =(d)=>{
+		
+		setContentView()
+    }
 	return {onCreate}
 })()
