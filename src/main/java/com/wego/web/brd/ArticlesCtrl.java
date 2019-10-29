@@ -1,5 +1,6 @@
 package com.wego.web.brd;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ public class ArticlesCtrl {
    @Autowired Printer printer;
    @Autowired Articles art;
    @Autowired ArticlesMapper articlesMapper;
+   @Autowired List<Articles>list;
    
    @PostMapping("/")
    public Map<?,?> write(@RequestBody Articles param){
@@ -36,37 +38,42 @@ public class ArticlesCtrl {
 	   c.accept(param);
 	   map.clear();
 	   map.put("msg", "SUCCESS");
-	 
 	   ISupplier<String> s =() -> articlesMapper.listArticle();
-		map.clear();
-		printer.accept("카운팅"+s.get());
 		map.put("count", s.get());
+		printer.accept("글쓰기 취소 : "+map.get("msg"));
 	   return map;
    }
+   @GetMapping("/")
+   public List<Articles> list (){
+	   list.clear();
+	   ISupplier <List<Articles>> s = () -> articlesMapper.selectAll();
+	   printer.accept("전체글 목록 \n"+s.get());
+	   return s.get();
+   }
+   
    @GetMapping("/count")
    public Map<?,?> listArticle() {
-	int count = 0;
 	ISupplier<String> s =() -> articlesMapper.listArticle();
+	printer.accept("총 게시글수 : "+s.get());
 	map.clear();
-	printer.accept("카운팅"+s.get());
 	map.put("count", s.get());
 	return map;
-	   
    }
-   
-   @GetMapping("/{artseq}")
-   public Articles read(@PathVariable String artseq, @RequestBody Articles param){
-      return null;
-   }
-   
+ 
    @PutMapping("/{artseq}")
-   public Articles update(@PathVariable String artseq, @RequestBody Articles param){
-      return null;
+   public Articles updateArticle(@PathVariable String artseq, @RequestBody Articles param){
+	   IConsumer<Articles> o = t -> articlesMapper.updateArticle(param);
+	   o.accept(param);
+	   art = param;
+	   return art;
    }
    
    @DeleteMapping("/{artseq}")
-   public Map<?,?> removeArticle(@PathVariable String artseq, @RequestBody Articles param){
-      return map;
+   public Articles deleteArticle(@PathVariable String artseq, @RequestBody Articles param){
+	   IConsumer<Articles> o = t -> articlesMapper.deleteArticle(param);
+	  o.accept(param);
+	  art = param;
+	   return art;
    }
    
    

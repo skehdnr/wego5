@@ -40,7 +40,7 @@ public class UserCtrl {
 	
 	@PostMapping("/")
 	public Map<?,?> join(@RequestBody User param) {
-		printer.accept("Join들어옴+");
+		printer.accept("Join들어옴");
 		IConsumer<User> c = t-> userMapper.insertUser(param);
 		c.accept(param);
 		map.clear();
@@ -49,7 +49,7 @@ public class UserCtrl {
 	}
 	@PostMapping("/{uid}")
     public User login(@PathVariable String uid , @RequestBody User param) {
-		printer.accept("login들어옴+");
+		printer.accept("login들어옴, 아이디  : "+uid);
 		IFunction<User,User> f = t -> userMapper.selectByIdPw(param);
        return f.apply(param);
     }

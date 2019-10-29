@@ -15,5 +15,17 @@
            #{uid}, #{boardType},#{title}, #{content}
        )
    </insert>
+   <select  id="selectAll" resultType="Article" >
+   SELECT A.BOARD_TYPE AS boardType, A.* FROM ARTICLE A
+   </select>
+   <select id="deleteArticle" resultType="Article">
+   DELETE FROM ARTICLE WHERE TITLE = #{title}
+   </select>
+   <select  id="updateArticle" resultType="Article">
+    UPDATE ARTICLE SET
+	TITLE = #{title},
+	CONTENT = #{content}
+	WHERE ARTSEQ = #{artseq}
+   </select>
    
 </mapper>
