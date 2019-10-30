@@ -1,20 +1,18 @@
 "use strict"
 var brd = brd||{}
 brd = (()=>{
-	let _, js, css, img, brd_vue_js, $userid, navi_js ,navi_vue_js
-	let init =x=>{
-		_ = x._
-        js = x.js
-        css = x.css
-        img = x.img
+	let _, js, css, img, brd_vue_js, navi_js ,navi_vue_js
+	let init =()=>{
+		_ = $.ctx()
+		js = $.js()
+		css = $.css()
+		img = $.img()
         brd_vue_js = js+'/vue/brd_vue.js'
-        $userid = $.user()
         navi_js = js+'/cmm/navi.js'
         navi_vue_js = js+'/vue/navi_vue.js'
 	}
-	let onCreate = x =>{
-		alert('넘어온_'+x._)
-		init(x)
+	let onCreate = () =>{
+		init()
 		$.when(
 			$.getScript(brd_vue_js),
 			$.getScript(navi_js),
@@ -64,7 +62,7 @@ brd = (()=>{
 	}
 	let write=()=>{
         $('#recent_updates').html(brd_vue.brd_write())
-        $('#write_form input[name="writer"]').val($userid)
+        $('#write_form input[name="writer"]').val(getCookie("USERID"))
         $('#suggestions').remove()
         $('<input>',{
             style: "float:right;width:100px;margin-right:10px",

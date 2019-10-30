@@ -2,22 +2,24 @@
 var auth = auth || {}
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-    let _, js, css,img,auth_vue_js,brd_js,router_js
-    let init = ()=>{
-    	 _ = $.ctx()
-         js = $.js()
-         css = $.css()
-         img = $.img()
+    let _, js, css, img, auth_vue_js, brd_js, router_js, cookie_js
+    let init =()=>{
+    	_ = $.ctx()
+		js = $.js()
+		css = $.css()
+		img = $.img()
         auth_vue_js = js+'/vue/auth_vue.js'
         brd_js = js+'/brd/brd.js'
-        router_js = js+'/cmm/router.js'
+        router_js = js + '/cmm/router.js'
+        cookie_js = js + '/cmm/cookie.js'
     }
     let onCreate =()=>{
         init()
         $.when(
         $.getScript(auth_vue_js),
         $.getScript(router_js),
-        $.getScript(brd_js)
+        $.getScript(brd_js),
+        $.getScript(cookie_js)
         )
         .done(()=>{
            setContentView()
@@ -102,8 +104,10 @@ auth = (()=>{
 		          dataType : 'json',
 		          contentType : 'application/json',
 		          success: d =>{
-		        	  $.extend(new User(d))
-          			  brd.onCreate({_:_, js:js, css:css, img:img})
+		        	 /* $.extend(new User(d))*/
+		        	  setCookie("USERID",d.uid)
+		        	  alert('저장된쿠키 : '+getCookie("USERID"))
+          			  brd.onCreate()
       			},
 		          error : e => {
 			    	alert('Loign AJAX 실패');

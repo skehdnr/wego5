@@ -10,15 +10,5 @@ function Session(x) {
 		css : ()=>{return sessionStorage.getItem('css');},
 		img : ()=>{return sessionStorage.getItem('img');}
 	}
-	}
-function User(x) {
-	sessionStorage.setItem('uid',x.uid);
-	sessionStorage.setItem('uid',x.pwd);
-	sessionStorage.setItem('uname',x.uname);
-	return{
-		user : ()=>{return sessionStorage.getItem('uid');},
-		password : ()=>{return sessionStorage.getItem('pwd');},
-		name : ()=>{return sessionStorage.getItem('uname');}
-	
-}
+
 }
