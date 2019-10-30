@@ -1,7 +1,7 @@
 /* https://getbootstrap.com/docs/4.0/examples/offcanvas/ */
 var brd_vue = brd_vue || {}
 brd_vue = {
-	brd_head:()=>{
+	brd_head:x=>{
 		return '<head>'+
 		'    <meta charset="utf-8">'+
 	    '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'+
@@ -10,51 +10,13 @@ brd_vue = {
 	    '<link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">'+
 	'    <title>Offcanvas template for Bootstrap</title>'+
 	'    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/offcanvas/">'+
-	'    <!-- Bootstrap core CSS -->'+
 	    '<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">'+
-	'    <!-- Custom styles for this template -->'+
 	'    <link href="https://getbootstrap.com/docs/4.0/examples/offcanvas/offcanvas.css" rel="stylesheet">'+
 	'	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">'+
 	'  </head>'
-	
 	},
-	brd_body: ()=>{
-		return  '<body class="bg-light">'+
-
-		'    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">'+
-		'      <a class="navbar-brand" href="#"><i class="fas fa-paw fa-2x"></i></a>'+
-		'      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">'+
-		'        <span class="navbar-toggler-icon"></span>'+
-		'      </button>'+
-
-		'      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">'+
-		'        <ul class="navbar-nav mr-auto">'+
-		'          <li id="go_write" class="nav-item active"></li>'+
-		'          <li class="nav-item">'+
-		'            <a class="nav-link" href="#">Notifications</a>'+
-		'          </li>'+
-		'          <li class="nav-item">'+
-		'            <a class="nav-link" href="#">Profile</a>'+
-		'          </li>'+
-		'          <li class="nav-item">'+
-		'            <a class="nav-link" href="#">Switch account</a>'+
-		'          </li>'+
-		'          <li class="nav-item dropdown">'+
-		'            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>'+
-		'            <div class="dropdown-menu" aria-labelledby="dropdown01">'+
-		'              <a class="dropdown-item" href="#">Action</a>'+
-		'              <a class="dropdown-item" href="#">Another action</a>'+
-		'              <a class="dropdown-item" href="#">Something else here</a>'+
-		'            </div>'+
-		'          </li>'+
-		'        </ul>'+
-		'        <form class="form-inline my-2 my-lg-0">'+
-		'          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">'+
-		'          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>'+
-		'        </form>'+
-		'      </div>'+
-		'    </nav>'+
-
+	brd_body: x=>{
+		return  '<body class="bg-light"><div id="navi"></div>'+
 		'    <div  class="nav-scroller bg-white box-shadow">'+
 		'      <nav class="nav nav-underline">'+
 		'        <a class="nav-link active" href="#">Dashboard</a>'+
@@ -71,7 +33,6 @@ brd_vue = {
 		'        <a class="nav-link" href="#">Link</a>'+
 		'      </nav>'+
 		'    </div>'+
-
 		'    <main role="main" class="container">'+
 		'      <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">'+
 		'        <img class="mr-3" src="/web/resources/img/wegoimg.jpg" alt="" width="48" height="48">'+

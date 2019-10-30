@@ -1,24 +1,36 @@
 "use strict"
 var brd = brd||{}
 brd = (()=>{
-	let _, js, brd_vue_js, $userid
-	let init =()=>{
-		 _ = $.ctx()
-        js = $.js()
+	let _, js, css, img, brd_vue_js, $userid, navi_js ,navi_vue_js
+	let init =x=>{
+		_ = x._
+        js = x.js
+        css = x.css
+        img = x.img
         brd_vue_js = js+'/vue/brd_vue.js'
         $userid = $.user()
+        navi_js = js+'/cmm/navi.js'
+        navi_vue_js = js+'/vue/navi_vue.js'
 	}
-	let onCreate = () =>{
-		init()
-		$.getScript(brd_vue_js).done(()=>{
-			setContentView()
-			navigation()
-	})
+	let onCreate = x =>{
+		alert('넘어온_'+x._)
+		init(x)
+		$.when(
+			$.getScript(brd_vue_js),
+			$.getScript(navi_js),
+			$.getScript(navi_vue_js)
+			).done(()=>{
+				setContentView()
+				navi.onCreate({_:_, js:js, css:css, img:img})
+			}).fail(()=>{
+				alert(WHEN_ERR)
+			})
 	}
 	let setContentView=()=>{
 			$('head').html(brd_vue.brd_head())
 	        $('body').addClass('text-center')
 	        .html(brd_vue.brd_body())
+	        $(navi_vue.nav()).appendTo('#navi')
 	        recent_updates()
 	}
 	let recent_updates=()=>{
@@ -93,34 +105,13 @@ brd = (()=>{
             })
         })
     }
-	let navigation = ()=>{
-		$('<a>',{
-        	href : '#',
-        	click : e=>{
-	        	e.preventDefault()
-	        	write()
-        },
-        text : '글쓰기'
-	})
-	.addClass('nav-iink')
-	.appendTo('#go_write')
-	$('<a>',{
-		href : '#',
-		click : e=>{
-			e.preventDefault()
-			mypage()
-		},
-		text : '내가쓴글보기'
-	})
-	.addClass('nav-iink')
-	.appendTo('#mywrite')
-	}
+	
 	let detail = x =>{
 		$('#recent_updates').html(brd_vue.brd_write())
 		$('#recent_updates div.container-fluid h1').html('ARTICLE DETAILE')
 		$('#write_form input[name="artseq"]').val(x.artseq)
         $('#write_form input[name="writer"]').val(x.uid)
-        $('#write_form input[name="title"]').val(x.title)
+        $('#write_form input[name="title"]').val(+x.title)
         $('#write_form textarea[name="content"]').val(x.content)
         $('#suggestions').remove()
         $('<input>',{
@@ -185,9 +176,5 @@ brd = (()=>{
         })
 		
 	}
-	let mypage =(d)=>{
-		
-		setContentView()
-    }
-	return {onCreate}
+	return {onCreate,write}
 })()

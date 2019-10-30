@@ -2,10 +2,12 @@
 var auth = auth || {}
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-    let _, js, auth_vue_js,brd_js,router_js
+    let _, js, css,img,auth_vue_js,brd_js,router_js
     let init = ()=>{
-        _ = $.ctx()
-        js = $.js()
+    	 _ = $.ctx()
+         js = $.js()
+         css = $.css()
+         img = $.img()
         auth_vue_js = js+'/vue/auth_vue.js'
         brd_js = js+'/brd/brd.js'
         router_js = js+'/cmm/router.js'
@@ -14,7 +16,8 @@ auth = (()=>{
         init()
         $.when(
         $.getScript(auth_vue_js),
-        $.getScript(router_js)
+        $.getScript(router_js),
+        $.getScript(brd_js)
         )
         .done(()=>{
            setContentView()
@@ -89,7 +92,6 @@ auth = (()=>{
     }
     let login =()=>{
         $('<button>',{
-        	type : "submit",
         	text : "로그인",
         	click : e => {
         		e.preventDefault()
@@ -100,15 +102,8 @@ auth = (()=>{
 		          dataType : 'json',
 		          contentType : 'application/json',
 		          success: d =>{
-      				$.when(
-      						$.getScript(router_js,$.extend(new User(d))),
-      						$.getScript(brd_js)
-          				).done(()=>{
-          				 	brd.onCreate()
-          				}
-          				).fail(()=>{
-          					alert('WHEN DONE 실패')
-          				})
+		        	  $.extend(new User(d))
+          			  brd.onCreate({_:_, js:js, css:css, img:img})
       			},
 		          error : e => {
 			    	alert('Loign AJAX 실패');
