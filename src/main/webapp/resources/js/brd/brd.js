@@ -55,7 +55,6 @@ brd = (()=>{
 			.click(()=>{
 				alert('제목 클릭')
 				detail(j)
-				
 			})
 			})
         })
