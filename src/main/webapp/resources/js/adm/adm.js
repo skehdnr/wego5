@@ -94,8 +94,6 @@ admin = (()=>{
 					$.getJSON(_+'/tx/crawling/'+arr[0]+'/'+arr[1],d=>{
 						alert(d.msg)
 			})
-			}else{
-				alert('빈칸을채우시요')
 			}
 		})
 		}
