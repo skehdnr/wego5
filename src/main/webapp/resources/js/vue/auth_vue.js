@@ -33,7 +33,7 @@ auth_vue = {
 	join_body: ()=>{
 		return '<div class="container" >'+
         '  <div class="py-5 text-center">'+
-        '    <img class="d-block mx-auto mb-4" src="/web/resources/img/wegoimg.jpg" alt="" width="72" height="72">'+
+        '    <img class="d-block mx-auto mb-4" src="/web/resources/img/wego.png" alt="" width="72" height="72">'+
         '    <h2>WeGo</h2>'+
         '  </div>'+
         '  <div class="row">'+

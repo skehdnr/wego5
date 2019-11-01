@@ -2,7 +2,7 @@
 var auth = auth || {}
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-    let _, js, css, img, auth_vue_js, brd_js, router_js, cookie_js
+    let _, js, css, img, auth_vue_js, brd_js, router_js, cookie_js, adm_js
     let init =()=>{
     	_ = $.ctx()
 		js = $.js()
@@ -12,6 +12,7 @@ auth = (()=>{
         brd_js = js+'/brd/brd.js'
         router_js = js + '/cmm/router.js'
         cookie_js = js + '/cmm/cookie.js'
+        adm_js = js+'/adm/adm.js'
     }
     let onCreate =()=>{
         init()
@@ -19,7 +20,8 @@ auth = (()=>{
         $.getScript(auth_vue_js),
         $.getScript(router_js),
         $.getScript(brd_js),
-        $.getScript(cookie_js)
+        $.getScript(cookie_js),
+        $.getScript(adm_js)
         )
         .done(()=>{
            setContentView()
@@ -156,9 +158,9 @@ auth = (()=>{
     }
     let access = () =>{
     	$('#a_go_admin').click(()=>{
-    		let ok = confirm('직원전용 입니다')
+    		admin.onCreate()
+    		/*let ok = confirm('직원전용 입니다')
         	if(ok){
-//        		alert('입력한 사번  : '+eid)
         		let eid = prompt('관리자ID를 입력해 주세요')
         		$.ajax({
         			url : _+'/admins'+$('#eid').val(),
@@ -179,7 +181,7 @@ auth = (()=>{
         				alert('로그인실패')
         			}
         		})
-        	}	
+        	}*/	
     	})
     }
     return {onCreate, join, login}
