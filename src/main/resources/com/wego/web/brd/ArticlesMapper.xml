@@ -15,8 +15,12 @@
            #{uid}, #{boardType},#{title}, #{content}
        )
    </insert>
-   <select  id="selectAll" resultType="Article" >
-   SELECT A.BOARD_TYPE AS boardType, A.* FROM ARTICLE A
+   <select id="selectAll" resultType="Article">
+		SELECT A.BOARD_TYPE AS boardType, A.* FROM (
+			SELECT * 
+			FROM ARTICLE
+			ORDER BY ARTSEQ DESC) A
+		LIMIT 0, 5
    </select>
    <select id="deleteArticle" resultType="Article">
    DELETE FROM ARTICLE WHERE TITLE = #{title}

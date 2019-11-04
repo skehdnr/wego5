@@ -13,6 +13,7 @@ auth = (()=>{
         router_js = js + '/cmm/router.js'
         cookie_js = js + '/cmm/cookie.js'
         adm_js = js+'/adm/adm.js'
+        
     }
     let onCreate =()=>{
         init()
