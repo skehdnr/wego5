@@ -30,6 +30,8 @@ public class MybatisConfig {
 	   return factoryBean;
 	 }
 	 
+	 
+	 
 	 @Bean
 	 public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
 	   return new SqlSessionTemplate(sqlSessionFactory);
