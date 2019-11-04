@@ -23,7 +23,6 @@ public class Proxy {
 	private int pageNum;
 	private String search;
 	@Autowired Printer p;
-	// @Autowired List<String> proxyList;
 	
 	public List<?> crawl(Map<?,?> paramMap){
 		String url = "http://"+paramMap.get("site")+"/";
@@ -35,8 +34,8 @@ public class Proxy {
 			                                    .method(Connection.Method.GET)
 			                                    .execute();
 			Document document = response.parse();
-			//String text = document.html();
-			String text = document.text();
+			String text = document.html();
+			//String text = document.text();
 			p.accept("크롤링한 텍스트 \n"+text);
 			proxyList.add(text);
 			

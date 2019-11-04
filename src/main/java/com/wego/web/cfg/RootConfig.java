@@ -9,6 +9,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -37,5 +38,8 @@ public class RootConfig {
 
 		    return dataSource;
  }
-
+ @Bean
+ public DataSourceTransactionManager txMannager() {
+	 return new DataSourceTransactionManager(dataSource());
+ }
 }

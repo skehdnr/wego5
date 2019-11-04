@@ -1,5 +1,5 @@
 "use strict"
-$.protoType.nullChecker=x=>{
+$.prototype.nullChecker=x=>{
 		let flag = false
 		let i = 0
 		for( i in x){
