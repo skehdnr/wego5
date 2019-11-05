@@ -1,8 +1,9 @@
-package com.wego.web.aop;
+package com.wego.web.pxy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -11,18 +12,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.wego.web.brd.ArticlesMapper;
+import com.wego.web.cmm.ISupplier;
 import com.wego.web.utl.Printer;
 
 import lombok.Data;
 
-@Data
-@Lazy
-@Component
-
+@Component @Data @Lazy
 public class Proxy {
-	private int pageNum;
+	private int pageNum, pageSize, startRow, endRow;
 	private String search;
+	private final int BOLCK_SIZE = 5;
 	@Autowired Printer p;
+	@Autowired ArticlesMapper articlesMapper;
+	
+	@SuppressWarnings("unused")
+	public void paging () {
+		ISupplier <String> s = ()-> articlesMapper.countArticle();
+		int totalCount = Integer.parseInt(s.get());
+		int pageCount = (totalCount%5==0)?(totalCount/pageSize):(totalCount/pageSize)+1;
+		startRow = (pageNum-1)*pageSize;
+		endRow = (pageNum == pageCount) ? totalCount-1 : (pageNum*pageSize)-1 ;
+		
+		int blockCount = (pageCount%BOLCK_SIZE==0)?(pageCount/BOLCK_SIZE):(pageCount/BOLCK_SIZE)+1;;
+		int blockNum = (pageNum-1)/BOLCK_SIZE;
+//		int startPage = (pageNum%BOLCK_SIZE==0)?blockCount+1:blockCount;
+		int endpage = 0;
+		boolean existPrev = false;
+		boolean existNext = false;
+	}
+	
+	public int parseInt(String param) {
+		Function<String,Integer> f = s -> Integer.parseInt(s);
+		return f.apply(param);
+		
+	}
 	
 	public List<?> crawl(Map<?,?> paramMap){
 		String url = "http://"+paramMap.get("site")+"/";
@@ -45,5 +69,6 @@ public class Proxy {
 		
 		return proxyList;
 	}
+	
 
 }

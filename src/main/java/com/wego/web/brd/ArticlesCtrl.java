@@ -18,18 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wego.web.cmm.IConsumer;
 import com.wego.web.cmm.IFunction;
+import com.wego.web.cmm.IPredicate;
 import com.wego.web.cmm.ISupplier;
+import com.wego.web.pxy.Proxy;
+import com.wego.web.pxy.ProxyMap;
 import com.wego.web.utl.Printer;
 
 @RestController
 @RequestMapping("/articles")
 public class ArticlesCtrl {
    private static final Logger logger = LoggerFactory.getLogger(ArticlesCtrl.class);
-   @Autowired Map<String , Object> map;
+   @Autowired ProxyMap map;
    @Autowired Printer printer;
    @Autowired Articles art;
    @Autowired ArticlesMapper articlesMapper;
    @Autowired List<Articles>list;
+   @Autowired Proxy pxy;
    
    @PostMapping("/")
    public Map<?,?> write(@RequestBody Articles param){
@@ -37,31 +41,29 @@ public class ArticlesCtrl {
 	   param.setBoardType("게시판");
 	   IConsumer<Articles> c = t -> articlesMapper.insertArticle(param);
 	   c.accept(param);
-	   map.clear();
-	   map.put("msg", "SUCCESS");
 	   ISupplier<String> s =() -> articlesMapper.listArticle();
-		map.put("count", s.get());
-		printer.accept("글쓰기 취소 : "+map.get("msg"));
-	   return map;
+		map.accept(Arrays.asList("msg","count"),Arrays.asList("SUCCESS",s.get()));
+	   return map.get();
    }
-   @GetMapping("/{pageNo}")
-   public Map<?,?> list (@PathVariable String pageNo){
+   @GetMapping("/page/{pageNo}/size/{pageSize}")
+   public Map<?,?> list (@PathVariable String pageNo,
+		   @PathVariable String pageSize){
+	   pxy.setPageNum(pxy.parseInt(pageNo));
+	   pxy.setPageSize(pxy.parseInt(pageSize));
+	   pxy.paging();
 	   list.clear();
-	   ISupplier <List<Articles>> s = () -> articlesMapper.selectAll();
+	   ISupplier <List<Articles>> s = () -> articlesMapper.selectAll(pxy);
 	   printer.accept("해당 페이지 목록 \n"+s.get());
-	   map.clear();
-	   map.put("articles", s.get());
-	   map.put("pages", Arrays.asList(1,2,3,4,5));
-	   return map;
+	   map.accept(Arrays.asList("articles","pages"),Arrays.asList(s.get(),Arrays.asList(1,2,3,4,5)));
+	   return map.get();
    }
    
    @GetMapping("/count")
    public Map<?,?> listArticle() {
-	ISupplier<String> s =() -> articlesMapper.listArticle();
+	ISupplier<String> s =() -> articlesMapper.countArticle();
 	printer.accept("총 게시글수 : "+s.get());
-	map.clear();
-	map.put("count", s.get());
-	return map;
+	map.accept(Arrays.asList("count"), Arrays.asList(s.get()));
+	return map.get();
    }
  
    @PutMapping("/{artseq}")
