@@ -3,7 +3,9 @@ package com.wego.web.pxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -21,8 +23,9 @@ import lombok.Data;
 @Component @Data @Lazy
 public class Proxy {
 	private int pageNum, pageSize, startRow, endRow;
+	private boolean existPrev,existNext;
 	private String search;
-	private final int BOLCK_SIZE = 5;
+	private final int BLOCK_SIZE = 5;
 	@Autowired Printer p;
 	@Autowired ArticlesMapper articlesMapper;
 	
@@ -34,12 +37,16 @@ public class Proxy {
 		startRow = (pageNum-1)*pageSize;
 		endRow = (pageNum == pageCount) ? totalCount-1 : (pageNum*pageSize)-1 ;
 		
-		int blockCount = (pageCount%BOLCK_SIZE==0)?(pageCount/BOLCK_SIZE):(pageCount/BOLCK_SIZE)+1;;
-		int blockNum = (pageNum-1)/BOLCK_SIZE;
-//		int startPage = (pageNum%BOLCK_SIZE==0)?blockCount+1:blockCount;
-		int endpage = 0;
-		boolean existPrev = false;
-		boolean existNext = false;
+		int blockCount = (pageCount%BLOCK_SIZE==0)?(pageCount/BLOCK_SIZE):(pageCount/BLOCK_SIZE)+1;
+		int blockNum = (pageNum-1)/BLOCK_SIZE;
+		int startPage = blockNum*BLOCK_SIZE+1;
+		int endpage = ((blockNum+1)==blockCount)? startPage + (BLOCK_SIZE -1) : pageCount;
+//		boolean existPrev = blockNum > 1 ;
+		existPrev = blockNum != 0 ;
+//		boolean existNext = blockNum < 1;
+		existNext = (blockNum + 1)!= blockCount;
+		
+		
 	}
 	
 	public int parseInt(String param) {
@@ -69,6 +76,10 @@ public class Proxy {
 		
 		return proxyList;
 	}
-	
+	public int random(int a, int b) {
+//		Supplier<Integer> s = ()-> (int)(Math.random(10000)+1);
+		BiFunction<Integer, Integer, Integer> f =(t,u)->(int)(Math.random()*(u-t))+t;
+		return f.apply(a, b) ;
+		}
 
 }

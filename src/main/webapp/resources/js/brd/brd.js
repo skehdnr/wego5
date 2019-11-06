@@ -39,7 +39,8 @@ brd = (()=>{
 		alert('호출된 PAGE 번호: '+x.page)
 		$('#recent_updates .media').remove()
 		$('#suggestions').remove()
-        $('#recent_updates .d-block').remove()
+		$('#recent_updates .d-block').remove()
+        $('#recent_updates .container').remove()
         $.getJSON(_+'/articles/page/'+x.page+'/size/'+x.size,d=>{
         	alert("총 개시글수 : "+d.articles.length)
 		$.each(d.articles,(i,j)=>{
@@ -67,15 +68,34 @@ brd = (()=>{
 //		        '<input class="form-control mr-sm-2" type="text" placeholder="검색어를 입력해 주세요." aria-label="Search">'+
 				'</form>').prependTo('#recent_updates div.container')
 		$('#pageing_form input[class="form-control mr-sm-2"]').css({width:'50%'})
-		$.each([{sub:'5개씩보기'},{sub:'10개씩보기'},{sub:'15개씩보기'}],(i,j)=>{
-			$('<option value='+j.sub+'>'+j.sub+'</option>')
+		$.each([{sub:'5개씩보기',val:'5'},{sub:'10개씩보기',val:'10'},{sub:'15개씩보기',val:'15'}],(i,j)=>{
+			$('<option value='+j.val+'>'+j.sub+'</option>')
 			.appendTo('#pageing_form select')
 		})
+		$('#pageing_form option[value="'+d.pxy.pageSize+'"]').attr('selected',true)
+		$('#pageing_form').change(()=>{
+			alert('선택한 보기: '+$('#pageing_form option:selected').val())
+				recent_updates({page:'1',size: $('#pageing_form option:selected').val()})
+		})
+			if(d.pxy.existPrev){
+				$('<li class="page-item"><a class="page-link" href="#">이전</a></li>')
+				.appendTo('#pagination')
+			}
 			$.each(d.pages,(i,j)=>{
 				$('<li class="page-item"><a class="page-link" href="#">'+j+'</a></li>')
 				.appendTo('#pagination')
+				.click(()=>{
+					alert('현재 클릭 페이지 보기'+j)
+					recent_updates({page: j, size: '5'})
+				})
 			})
-			
+			if(d.pxy.existNext){
+				$('<li class="page-item"><a class="page-link" href="#">다음</a></li>')
+				.appendTo('#pagination')
+			}
+			$('#pagination').css({'justify-content':'center '})
+      		$('#recent_updates div.container').css({'text-align':'right'})
+      		$('#paging_form').css({'float':'right','display':'block'})
         })
 	}
 	let write=()=>{
@@ -114,7 +134,7 @@ brd = (()=>{
                 contentType : 'application/json',
                 success : d=>{
                 	$('#recent_updates div.container-fluid').remove()
-                	recent_updates()
+                	recent_updates({page:'1',size:'5'})
                     
                 },
                 error : e=>{alert('에러')}

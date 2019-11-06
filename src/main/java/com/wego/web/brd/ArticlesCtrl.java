@@ -54,7 +54,10 @@ public class ArticlesCtrl {
 	   list.clear();
 	   ISupplier <List<Articles>> s = () -> articlesMapper.selectAll(pxy);
 	   printer.accept("해당 페이지 목록 \n"+s.get());
-	   map.accept(Arrays.asList("articles","pages"),Arrays.asList(s.get(),Arrays.asList(1,2,3,4,5)));
+	   int ran = pxy.random(3, 11);
+	   System.out.println("랜덤으로 나온수@@@@@@@@@@@@@@@@@@"+ran);
+	   map.accept(Arrays.asList("articles","pages","pxy"),
+			   Arrays.asList(s.get(),Arrays.asList(1,2,3,4,5),pxy));
 	   return map.get();
    }
    
