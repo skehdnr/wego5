@@ -22,7 +22,10 @@ import lombok.Data;
 
 @Component @Data @Lazy
 public class Proxy {
-	private int pageNum, pageSize, startRow, endRow;
+	private int totalCount,
+				pageCount,pageNum,pageSize,startPage,endpage,
+				startRow, endRow, 
+				nextBlock, prevBlock,blockCount,blockNum;
 	private boolean existPrev,existNext;
 	private String search;
 	private final int BLOCK_SIZE = 5;
@@ -32,20 +35,20 @@ public class Proxy {
 	@SuppressWarnings("unused")
 	public void paging () {
 		ISupplier <String> s = ()-> articlesMapper.countArticle();
-		int totalCount = Integer.parseInt(s.get());
-		int pageCount = (totalCount%5==0)?(totalCount/pageSize):(totalCount/pageSize)+1;
+		totalCount = Integer.parseInt(s.get());
+		pageCount = (totalCount%5==0)?(totalCount/pageSize):(totalCount/pageSize)+1;
 		startRow = (pageNum-1)*pageSize;
 		endRow = (pageNum == pageCount) ? totalCount-1 : (pageNum*pageSize)-1 ;
-		
-		int blockCount = (pageCount%BLOCK_SIZE==0)?(pageCount/BLOCK_SIZE):(pageCount/BLOCK_SIZE)+1;
-		int blockNum = (pageNum-1)/BLOCK_SIZE;
-		int startPage = blockNum*BLOCK_SIZE+1;
-		int endpage = ((blockNum+1)==blockCount)? startPage + (BLOCK_SIZE -1) : pageCount;
+		blockCount = (pageCount%BLOCK_SIZE==0)?(pageCount/BLOCK_SIZE):(pageCount/BLOCK_SIZE)+1;
+		blockNum = (pageNum-1)/BLOCK_SIZE;
+		startPage = blockNum*BLOCK_SIZE+1;
+		endpage = ((blockNum+1)==blockCount)? startPage + (BLOCK_SIZE -1) : pageCount;
 //		boolean existPrev = blockNum > 1 ;
 		existPrev = blockNum != 0 ;
 //		boolean existNext = blockNum < 1;
 		existNext = (blockNum + 1)!= blockCount;
-		
+		nextBlock = startPage+BLOCK_SIZE;
+		prevBlock = startPage-BLOCK_SIZE;
 		
 	}
 	

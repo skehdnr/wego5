@@ -110,7 +110,6 @@ auth = (()=>{
 		          success: d =>{
 		        	 /* $.extend(new User(d))*/
 		        	  setCookie("USERID",d.uid)
-		        	  alert('저장된쿠키 : '+getCookie("USERID"))
           			  brd.onCreate()
       			},
 		          error : e => {
