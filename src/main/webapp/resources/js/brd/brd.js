@@ -83,7 +83,7 @@ brd = (()=>{
   				e.preventDefault()
 	      		recent_updates({page: pxy.prevBlock, size: pxy.pageSize})
 	      	})
-		}
+	    	}
         	let i = 0
         	for(i= pxy.startPage; i<=pxy.endpage; i++) {
         		if(pxy.pageNum==i){
