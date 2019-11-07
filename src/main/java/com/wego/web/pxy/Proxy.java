@@ -23,7 +23,7 @@ import lombok.Data;
 @Component @Data @Lazy
 public class Proxy {
 	private int totalCount,
-				pageCount,pageNum,pageSize,startPage,endpage,
+				pageCount,pageNum,pageSize,startPage,endPage,
 				startRow, endRow, 
 				nextBlock, prevBlock,blockCount,blockNum;
 	private boolean existPrev,existNext;
@@ -36,19 +36,18 @@ public class Proxy {
 	public void paging () {
 		ISupplier <String> s = ()-> articlesMapper.countArticle();
 		totalCount = Integer.parseInt(s.get());
-		pageCount = (totalCount%5==0)?(totalCount/pageSize):(totalCount/pageSize)+1;
+		System.out.println("프록시 안에서 찍은 전체글 갯수: "+totalCount);
+		pageCount = (totalCount % pageSize != 0) ? (totalCount / pageSize)+1 : totalCount / pageSize;
 		startRow = (pageNum-1)*pageSize;
-		endRow = (pageNum == pageCount) ? totalCount-1 : (pageNum*pageSize)-1 ;
-		blockCount = (pageCount%BLOCK_SIZE==0)?(pageCount/BLOCK_SIZE):(pageCount/BLOCK_SIZE)+1;
-		blockNum = (pageNum-1)/BLOCK_SIZE;
-		startPage = blockNum*BLOCK_SIZE+1;
-		endpage = ((blockNum+1)==blockCount)? startPage + (BLOCK_SIZE -1) : pageCount;
-//		boolean existPrev = blockNum > 1 ;
-		existPrev = blockNum != 0 ;
-//		boolean existNext = blockNum < 1;
-		existNext = (blockNum + 1)!= blockCount;
-		nextBlock = startPage+BLOCK_SIZE;
-		prevBlock = startPage-BLOCK_SIZE;
+		endRow = (pageNum==pageCount) ? totalCount -1 : startRow + pageSize -1;
+		blockCount = (pageCount % BLOCK_SIZE != 0) ? (pageCount / BLOCK_SIZE)+1 : pageCount / BLOCK_SIZE;
+		blockNum = (pageNum - 1) / BLOCK_SIZE;
+		startPage = blockNum * BLOCK_SIZE + 1;
+		endPage = ((blockNum + 1) != blockCount) ? startPage + (BLOCK_SIZE -1) : pageCount;
+		existPrev = blockNum != 0;
+		existNext = (blockNum + 1) != blockCount;
+		nextBlock = startPage + BLOCK_SIZE;
+		prevBlock = startPage - BLOCK_SIZE;
 		
 	}
 	
